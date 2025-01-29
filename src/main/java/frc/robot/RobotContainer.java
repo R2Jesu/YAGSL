@@ -137,9 +137,9 @@ public class RobotContainer
                                 driveFieldOrientedDirectAngleSim);
 */
     drivebase.setDefaultCommand(
-      drivebase.driveCommand(() -> driverXbox.getRightX(),
-        () ->  driverXbox.getRightY(),
-        () -> -driverXbox.getLeftX()));
+      drivebase.driveCommand(() -> -driverXbox.getRightY(),
+        () ->  -driverXbox.getRightX(),
+        () -> driverXbox.getLeftX()));
 /* 
     if (Robot.isSimulation())
     {
