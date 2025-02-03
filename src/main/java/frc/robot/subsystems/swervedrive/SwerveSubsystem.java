@@ -268,7 +268,9 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Rotation2d getSpeakerYaw()
   {
-    int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
+    //We currently have tag1 available so change this for now
+    //int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
+    int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 7;
     // Taken from PhotonUtils.getYawToPose()
     Pose3d        speakerAprilTagPose = aprilTagFieldLayout.getTagPose(allianceAprilTag).get();
     Translation2d relativeTrl         = speakerAprilTagPose.toPose2d().relativeTo(getPose()).getTranslation();
