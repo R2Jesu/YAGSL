@@ -301,19 +301,16 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @return A {@link Command} which will run the alignment.
    */
-  /* public Command aimAtTarget(Cameras camera)
+  public Command aimAtTarget()
   {
 
     return run(() -> {
-      Optional<PhotonPipelineResult> resultO = camera.getBestResult();
-      if (resultO.isPresent())
-      {
-        var result = resultO.get();
-        if (result.hasTargets())
+
+        if (LimelightHelpers.getFiducialID("limelight") == 1)
         {
           drive(getTargetSpeeds(0,
                                 0,
-                                Rotation2d.fromDegrees(result.getBestTarget()
+                                Rotation2d.fromDegrees(LimelightHelpers.getTX("limelight"),
                                                              .getYaw()))); // Not sure if this will work, more math may be required.
         }
       }
