@@ -19,6 +19,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -28,6 +29,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.MutAngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,16 +38,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
-import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
-import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -55,9 +54,12 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import frc.robot.utilities.LimelightHelpers;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;;
 
 public class SwerveSubsystem extends SubsystemBase
 {
+
 
   /**
    * Swerve drive object.
@@ -67,14 +69,6 @@ public class SwerveSubsystem extends SubsystemBase
    * AprilTag field layout.
    */
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
-  /**
-   * Enable vision odometry updates while driving.
-   */
-  private final boolean             visionDriveTest     = false;
-  /**
-   * PhotonVision class to keep an accurate odometry.
-   */
-  private       Vision              vision;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -119,12 +113,13 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
     swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-    if (visionDriveTest)
+    /* if (visionDriveTest)
     {
       setupPhotonVision();
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
       swerveDrive.stopOdometryThread();
-    }
+    } */
+
     setupPathPlanner();
   }
 
@@ -143,23 +138,38 @@ public class SwerveSubsystem extends SubsystemBase
                                              Rotation2d.fromDegrees(0)));
   }
 
-  /**
-   * Setup the photon vision class.
-   */
-  public void setupPhotonVision()
-  {
-    vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+  public void updateVisionOdometry(){
+    MutAngularVelocity angVelo;
+    boolean rejectUpdate = false;
+    LimelightHelpers.SetRobotOrientation("limelight",swerveDrive.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+    angVelo = swerveDrive.getGyro().getYawAngularVelocity();
+    //SmartDashboard.putString("Base unit", angVelo.baseUnit().toString());
+    //SmartDashboard.putNumber("Magnitude", angVelo.magnitude());
+    //SmartDashboard.putNumber("Unit Magnitude", angVelo.baseUnitMagnitude());
+
+    if(Math.abs(angVelo.magnitude()) > 270.00){ // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+          rejectUpdate = true;
+    }
+
+    if(limelightMeasurement.tagCount == 0){
+      rejectUpdate = true;
+    }
+    if(!rejectUpdate){
+      swerveDrive.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
+      //SmartDashboard.putString("Update Odometry", "yes");
+    } 
+    else {
+      //SmartDashboard.putString("Update Odometry", "no");
+    }
   }
 
   @Override
   public void periodic()
   {
     // When vision is enabled we must manually update odometry in SwerveDrive
-    if (visionDriveTest)
-    {
-      swerveDrive.updateOdometry();
-      vision.updatePoseEstimation(swerveDrive);
-    }
+    updateVisionOdometry();
+    SmartDashboard.putNumber("Heading: ", getHeading().getDegrees());
   }
 
   @Override
@@ -289,7 +299,7 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @return A {@link Command} which will run the alignment.
    */
-  public Command aimAtTarget(Cameras camera)
+  /* public Command aimAtTarget(Cameras camera)
   {
 
     return run(() -> {
@@ -306,7 +316,7 @@ public class SwerveSubsystem extends SubsystemBase
         }
       }
     });
-  }
+  } */
 
   /**
    * Get the path follower with events.

@@ -139,7 +139,7 @@ public class RobotContainer
     drivebase.setDefaultCommand(
       drivebase.driveCommand(() -> -driverXbox.getRightY(),
         () ->  -driverXbox.getRightX(),
-        () -> driverXbox.getLeftX()));
+        () -> -driverXbox.getLeftX()));
 /* 
     if (Robot.isSimulation())
     {
