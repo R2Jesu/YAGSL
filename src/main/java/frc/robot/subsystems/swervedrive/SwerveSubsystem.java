@@ -17,6 +17,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+import com.studica.frc.AHRS;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
@@ -32,19 +34,25 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.MutAngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.subsystems.swervedrive.Vision.Cameras;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -170,6 +178,7 @@ public class SwerveSubsystem extends SubsystemBase
     // When vision is enabled we must manually update odometry in SwerveDrive
     updateVisionOdometry();
     SmartDashboard.putNumber("Heading: ", getHeading().getDegrees());
+    SmartDashboard.putNumber("tx: ", LimelightHelpers.getTX("limelight"));
   }
 
   @Override
@@ -301,21 +310,38 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @return A {@link Command} which will run the alignment.
    */
-  public Command aimAtTarget()
+
+
+     public Command aimAtTarget()
+  {
+    return run(() -> {
+      if (LimelightHelpers.getFiducialID("limelight") == 1)
+      {
+        
+          drive(getTargetSpeeds(0,
+                                0,
+                                Rotation2d.fromDegrees(getHeading().getDegrees() - LimelightHelpers.getTX("limelight")))); // Not sure if this will work, more math may be required.
+        
+      }
+    });
+  }
+
+ /*  public Command aimAtTarget()
   {
 
-    return run(() -> {
+    return run(
+    () -> {
 
         if (LimelightHelpers.getFiducialID("limelight") == 1)
         {
           drive(getTargetSpeeds(0,
                                 0,
-                                Rotation2d.fromDegrees(LimelightHelpers.getTX("limelight"),
-                                                             .getYaw()))); // Not sure if this will work, more math may be required.
-        }
+                                getHeading()));  // Not sure if this will work, more math may be required.
+                                                             
+// (LimelightHelpers.getTX("limelight")
+                                                            }                       
       }
-    });
-  } */
+    }; */
 
   /**
    * Get the path follower with events.

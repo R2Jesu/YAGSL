@@ -142,6 +142,7 @@ public class RobotContainer
         () -> -driverXbox.getLeftX()));
 
     driverXbox.button(2).whileTrue(drivebase.aimAtSpeaker(0));
+    driverXbox.button(1).whileTrue(drivebase.aimAtTarget());
 
   }
 
