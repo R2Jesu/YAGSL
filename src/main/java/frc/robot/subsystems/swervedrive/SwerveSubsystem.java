@@ -7,6 +7,7 @@ package frc.robot.subsystems.swervedrive;
 import static edu.wpi.first.units.Units.Meter;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
@@ -37,6 +38,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -63,7 +65,7 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import frc.robot.utilities.LimelightHelpers;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveSubsystem extends SubsystemBase
 {
@@ -76,7 +78,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * AprilTag field layout.
    */
-  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -179,6 +181,8 @@ public class SwerveSubsystem extends SubsystemBase
     updateVisionOdometry();
     SmartDashboard.putNumber("Heading: ", getHeading().getDegrees());
     SmartDashboard.putNumber("tx: ", LimelightHelpers.getTX("limelight"));
+    SmartDashboard.putString("Current Pose ", swerveDrive.getPose().toString());
+
   }
 
   @Override
@@ -236,6 +240,7 @@ public class SwerveSubsystem extends SubsystemBase
             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
             var alliance = DriverStation.getAlliance();
+            SmartDashboard.putString("Alliance ", DriverStation.getAlliance().toString());
             if (alliance.isPresent())
             {
               return alliance.get() == DriverStation.Alliance.Red;
@@ -279,7 +284,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     //We currently have tag1 available so change this for now
     //int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
-    int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 7;
+    int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 16 : 16;
     // Taken from PhotonUtils.getYawToPose()
     Pose3d        speakerAprilTagPose = aprilTagFieldLayout.getTagPose(allianceAprilTag).get();
     Translation2d relativeTrl         = speakerAprilTagPose.toPose2d().relativeTo(getPose()).getTranslation();
@@ -326,6 +331,21 @@ public class SwerveSubsystem extends SubsystemBase
     });
   }
 
+  public Command drivetoprocessor()
+  {
+/*     return run(() -> {
+      Pose3d processorAprilTagPose =aprilTagFieldLayout.getTagPose(16).get();
+      //SmartDashboard.putString("Pose3d ", processorAprilTagPose.toString());
+      Command a = driveToPose(processorAprilTagPose.toPose2d());
+      a.schedule();
+      SmartDashboard.putString("Req ", a.getRequirements().toString());
+      SmartDashboard.putBoolean("Scheduled ", a.isScheduled());
+      SmartDashboard.putString("A ", a.toString());
+   }); */
+   Pose3d processorAprilTagPose =aprilTagFieldLayout.getTagPose(16).get();
+   return driveToPose(processorAprilTagPose.toPose2d());
+  }
+
  /*  public Command aimAtTarget()
   {
 
@@ -364,6 +384,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command driveToPose(Pose2d pose)
   {
 // Create the constraints to use while pathfinding
+    //SmartDashboard.putString("Pose ", pose.toString());
     PathConstraints constraints = new PathConstraints(
         swerveDrive.getMaximumChassisVelocity(), 4.0,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
@@ -510,6 +531,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return run(() -> {
       // Make the robot move
+      
       swerveDrive.drive(SwerveMath.scaleTranslation(new Translation2d(
                             translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
                             translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()), 0.8),
