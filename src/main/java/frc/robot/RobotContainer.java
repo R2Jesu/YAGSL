@@ -47,7 +47,7 @@ public class RobotContainer
                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
                                                                  () -> -MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                                OperatorConstants.DEADBAND),
-                                                                 () -> -MathUtil.applyDeadband(driverXbox.getRightX(),
+                                                                () -> -MathUtil.applyDeadband(driverXbox.getRightX(),
                                                                                                OperatorConstants.RIGHT_X_DEADBAND),
                                                                  driverXbox.getHID()::getYButtonPressed,
                                                                  driverXbox.getHID()::getAButtonPressed,
@@ -139,9 +139,10 @@ public class RobotContainer
     drivebase.setDefaultCommand(
       drivebase.driveCommand(() -> -driverXbox.getRightY(),
         () ->  -driverXbox.getRightX(),
-        () -> -driverXbox.getLeftX()));
+        () -> driverXbox.getLeftX()));
 
-    driverXbox.button(2).whileTrue(drivebase.aimAtSpeaker(0));
+    driverXbox.button(2).onTrue(drivebase.drivetoprocessor());
+    driverXbox.button(1).whileTrue(drivebase.aimAtSpeaker(0));
 
   }
 
