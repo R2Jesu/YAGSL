@@ -4,14 +4,20 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,7 +40,9 @@ public class RobotContainer
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve"));
+                                                           "swerve"));
+  private final SendableChooser<Command> autoChooser;
+
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
@@ -116,6 +124,16 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    // path Auto Chooser
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    // path eventTrigger
+    new EventTrigger("R2Jesu_PlaceRL4").whileTrue(Commands.print("coral"));
+    new EventTrigger("R2Jesu_TakeAlgae").whileTrue(Commands.print("algae"));
+    new EventTrigger("R2Jesu_AlgaeProcessor").whileTrue(Commands.print("processor"));
+  
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -151,11 +169,13 @@ public class RobotContainer
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand()
+   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
-  }
+    
+    return autoChooser.getSelected();
+    //return drivebase.getAutonomousCommand("New Auto");
+  } 
 
   public void setDriveMode()
   {
