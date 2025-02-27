@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hey"
+            "pathName": "leavePlace2110a"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side2110ToProcessor"
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }
