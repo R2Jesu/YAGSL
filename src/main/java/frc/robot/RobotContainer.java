@@ -157,7 +157,7 @@ public class RobotContainer
     drivebase.setDefaultCommand(
       drivebase.driveCommand(() -> -driverXbox.getRightY(),
         () ->  -driverXbox.getRightX(),
-        () -> driverXbox.getLeftX()));
+        () -> -driverXbox.getLeftX()));
 
     driverXbox.button(2).onTrue(drivebase.drivetoprocessor());
     driverXbox.button(1).whileTrue(drivebase.aimAtSpeaker(0));
@@ -173,8 +173,8 @@ public class RobotContainer
   {
     // An example command will be run in autonomous
     
-    return autoChooser.getSelected();
-    //return drivebase.getAutonomousCommand("New Auto");
+    //return autoChooser.getSelected();
+    return drivebase.getAutonomousCommand("please");
   } 
 
   public void setDriveMode()
