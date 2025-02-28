@@ -208,13 +208,13 @@ public class SwerveSubsystem extends SubsystemBase
       // Configure AutoBuilder last
       AutoBuilder.configure(
           // this::getPose
-          swerveDrive::getPose,
+          this::getPose,
           // Robot pose supplier
           // this::resetOdometry
-          swerveDrive::resetOdometry,
+          this::resetOdometry,
           // Method to reset odometry (will be called if your auto has a starting pose)
           // this::getRobotVelocity
-          swerveDrive::getRobotVelocity,
+          this::getRobotVelocity,
           // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
           (speedsRobotRelative, moduleFeedForwards) -> {
             if (enableFeedforward)

@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.R2Jesu_PlaceL4Command;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -130,9 +131,10 @@ public class RobotContainer
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // path eventTrigger
-    new EventTrigger("R2Jesu_PlaceRL4").whileTrue(Commands.print("coral"));
-    new EventTrigger("R2Jesu_TakeAlgae").whileTrue(Commands.print("algae"));
-    new EventTrigger("R2Jesu_AlgaeProcessor").whileTrue(Commands.print("processor"));
+    new EventTrigger("R2Jesu_PlaceRL4").whileTrue(Commands.print("raise to L4 and place coral"));
+    //new EventTrigger("R2Jesu_PlaceRL4").whileTrue(R2Jesu_PlaceL4Command.);
+    new EventTrigger("R2Jesu_TakeAlgae").whileTrue(Commands.print("Lower to the L2 (i think) algae and remove"));
+    new EventTrigger("R2Jesu_AlgaeProcessor").whileTrue(Commands.print("lower algae and place in processor"));
   
     // Configure the trigger bindings
     configureBindings();
