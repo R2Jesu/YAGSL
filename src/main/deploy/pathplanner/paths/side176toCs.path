@@ -3,35 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.017989864864864,
-        "y": 0.6454391891891885
+        "x": 3.7748310810810812,
+        "y": 2.789780405405405
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.209734040928903,
-        "y": 0.6449161001206228
+        "x": 2.9263387897649515,
+        "y": 2.062135349836172
       },
       "isLocked": false,
-      "linkedName": "processor"
+      "linkedName": "176"
     },
     {
       "anchor": {
-        "x": 4.041638513513513,
-        "y": 0.6750844594594594
+        "x": 1.541554054054054,
+        "y": 0.8035472972972957
       },
       "prevControl": {
-        "x": 5.029693023574787,
-        "y": 0.6750844594594595
+        "x": 2.2268495471733516,
+        "y": 1.396406075602123
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "coralStation"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "R2Jesu_CoralStation",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 1.25,
     "maxAcceleration": 3.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.15747573925964
+    "rotation": 55.305
   },
   "reversed": false,
-  "folder": null,
+  "folder": "side176",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 58.00000000000001
   },
   "useDefaultConstraints": true
 }

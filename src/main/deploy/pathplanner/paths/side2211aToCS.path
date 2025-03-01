@@ -3,42 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.8598817567567565,
-        "y": 4.05464527027027
+        "x": 5.168158783783785,
+        "y": 2.789780405405405
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.890921782894614,
-        "y": 3.2070258541088386
+        "x": 4.322601842119523,
+        "y": 2.40579499768459
       },
       "isLocked": false,
-      "linkedName": "endPlace4a"
+      "linkedName": "2111"
     },
     {
       "anchor": {
-        "x": 6.017989864864864,
-        "y": 0.6454391891891885
+        "x": 1.541554054054054,
+        "y": 0.8035472972972957
       },
       "prevControl": {
-        "x": 6.0673986486486475,
-        "y": 1.6237331081081072
+        "x": 2.3762257566413068,
+        "y": 1.231935434922757
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "processor"
+      "linkedName": "coralStation"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.31492439184746873,
+      "rotationDegrees": 119.99999999999999
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "R2Jesu_AlgaeProcessor",
+      "name": "R2Jesu_CoralStation",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
@@ -54,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 55.30484646876605
   },
   "reversed": false,
-  "folder": "side2110",
+  "folder": "side2211",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

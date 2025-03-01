@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "leavePlace2211a"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side2211aToCS"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "csToSide176a"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side176toCs"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "csToSide176b"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

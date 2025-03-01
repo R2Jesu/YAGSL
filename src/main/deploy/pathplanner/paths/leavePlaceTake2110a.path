@@ -3,49 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.8598817567567565,
+        "x": 7.569425675675675,
         "y": 4.05464527027027
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.890921782894614,
-        "y": 3.2070258541088386
+        "x": 7.069425675675675,
+        "y": 4.05464527027027
       },
       "isLocked": false,
-      "linkedName": "endPlace4a"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.017989864864864,
-        "y": 0.6454391891891885
+        "x": 5.8598817567567565,
+        "y": 4.05464527027027
       },
       "prevControl": {
-        "x": 6.0673986486486475,
-        "y": 1.6237331081081072
+        "x": 6.3598817567567565,
+        "y": 4.05464527027027
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "processor"
+      "linkedName": "endPlace4a"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "R2Jesu_AlgaeProcessor",
+      "name": "R2Jesu_PlaceLL4",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "R2Jesu_TakeAlgae",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.25,
+    "maxVelocity": 0.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 90.0,
     "maxAngularAcceleration": 180.0,
@@ -54,7 +55,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "side2110",
@@ -62,5 +63,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
