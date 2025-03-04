@@ -131,8 +131,6 @@ public class SwerveSubsystem extends SubsystemBase
     } */
 
     setupPathPlanner();
-
-
   }
 
   /**
@@ -197,7 +195,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void setupPathPlanner()
   {
-    // Load the RobotConfig from the GUI settings. You should probably
+    // Set up the constructor Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config;
     try
@@ -207,14 +205,11 @@ public class SwerveSubsystem extends SubsystemBase
       final boolean enableFeedforward = true;
       // Configure AutoBuilder last
       AutoBuilder.configure(
-          // this::getPose
-          this::getPose,
+          swerveDrive::getPose,
           // Robot pose supplier
-          // this::resetOdometry
-          this::resetOdometry,
+          swerveDrive::resetOdometry,
           // Method to reset odometry (will be called if your auto has a starting pose)
-          // this::getRobotVelocity
-          this::getRobotVelocity,
+          swerveDrive::getRobotVelocity,
           // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
           (speedsRobotRelative, moduleFeedForwards) -> {
             if (enableFeedforward)
@@ -229,7 +224,7 @@ public class SwerveSubsystem extends SubsystemBase
               swerveDrive.setChassisSpeeds(speedsRobotRelative);
             }
           },
-          // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+          // TUNE last  Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
           new PPHolonomicDriveController(
               // PPHolonomicController is the built in path following controller for holonomic drive trains
               new PIDConstants(5.0, 0.0, 0.0),

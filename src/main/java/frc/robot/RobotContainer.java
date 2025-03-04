@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.R2Jesu_PlaceL4Command;
+import frc.robot.commands.pathplanner.R2Jesu_PlaceCommand;
+//import frc.robot.commands.R2Jesu_PlaceCommand;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -126,13 +127,22 @@ public class RobotContainer
   public RobotContainer()
   {
     // path Auto Chooser
+    // silence driver station?
+    DriverStation.silenceJoystickConnectionWarning(true);;
+// this if for a command in pathplanner
+//    NamedCommands.registerCommand("R2Jesu_PlaceLL4", new R2Jesu_PlaceCommand(drivebase, 4));
+    
     autoChooser = AutoBuilder.buildAutoChooser();
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
+/*  // Register Named Commands
+ NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
+ NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+ NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+ */
     // path eventTrigger
-    new EventTrigger("R2Jesu_PlaceRL4").whileTrue(Commands.print("raise to L4 and place coral"));
-    //new EventTrigger("R2Jesu_PlaceRL4").whileTrue(R2Jesu_PlaceL4Command.);
+    new EventTrigger("R2Jesu_PlaceLL4").whileTrue(Commands.print("raise to L4 and place coral"));
+    //new EventTrigger("R2Jesu_PlaceLL4").whileTrue(new R2Jesu_PlaceCommand(drivebase,4));
     new EventTrigger("R2Jesu_TakeAlgae").whileTrue(Commands.print("Lower to the L2 (i think) algae and remove"));
     new EventTrigger("R2Jesu_AlgaeProcessor").whileTrue(Commands.print("lower algae and place in processor"));
   

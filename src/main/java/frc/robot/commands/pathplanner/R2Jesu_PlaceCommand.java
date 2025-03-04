@@ -1,25 +1,29 @@
 package frc.robot.commands.pathplanner;
 
+import com.pathplanner.lib.events.EventTrigger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.PathEventSubsytem;
+//import frc.robot.subsystems.PathEventSubsytem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+public class R2Jesu_PlaceCommand extends Command {
 
-public class R2Jesu_PlaceL4Command extends Command {
+     private final SwerveSubsystem swerveSubsystem;
+     private final int coralLevel=0;
 
-    private final PathEventSubsytem m_Subsytem;
-
-    public R2Jesu_PlaceL4Command(PathEventSubsytem subsytem)
+    public R2Jesu_PlaceCommand(SwerveSubsystem m_swerveSubsystem, int coralLevel)
     {
-        m_Subsytem = subsytem;
+      this.swerveSubsystem = m_swerveSubsystem;
+      addRequirements(swerveSubsystem);
     }
     
-     /**
+   /**
    * The initial subroutine of a command.  Called once when the command is initially scheduled.
    */
   @Override
@@ -35,7 +39,10 @@ public class R2Jesu_PlaceL4Command extends Command {
   @Override
   public void execute()
   {
-    m_Subsytem.placeL4();
+    Commands.print("Aim Right");
+    Commands.print("Call raisetoLevel: "+ coralLevel);
+    Commands.print("Call placecoralonLevel");
+    //m_Subsytem.placeL4();
   }
 
   /**
